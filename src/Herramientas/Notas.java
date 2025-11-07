@@ -4,7 +4,7 @@ import Exceptions.NotaException;
 
 import java.util.HashMap;
 import java.util.Map;
-public class Notas{
+public class Notas extends Herramienta{
 
     private Map<String, String> notas;
 
@@ -85,7 +85,7 @@ public class Notas{
         System.out.println("---------------------------");
         System.out.println(notas.get(titulo));
         System.out.println("---------------------------");
-        IO.println("");
+        //IO.println(""); io?
     }
 }
 

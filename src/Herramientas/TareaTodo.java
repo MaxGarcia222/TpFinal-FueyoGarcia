@@ -1,6 +1,6 @@
 package Herramientas;
 
-public class TareaTodo {
+public class TareaTodo extends Herramienta{
     private String contenido;
     private boolean completada;
 
