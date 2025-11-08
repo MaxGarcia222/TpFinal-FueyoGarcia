@@ -1,7 +1,8 @@
+import Enums.TipoEvento;
 import Exceptions.TareaException;
-import Herramientas.GestorTodo;
-import Herramientas.Notas;
-import Herramientas.TareaTodo;
+import Herramientas.*;
+
+import java.time.LocalDate;
 
 public class Main {
     public static void main(String[] args) {
@@ -19,7 +20,7 @@ public class Main {
          */
 
 
-
+        /*
        //PRUEBAS TAREAS TO DO
 
         GestorTodo tareas = new GestorTodo();
@@ -84,6 +85,29 @@ public class Main {
         //aca probe buscar si decia de tp a ver si aparecian todos
         tareas.buscarPorTexto("tp");
 
+         */
+
+        /*
+        //PRUEBA CALENDARIO
+        Calendario c = new Calendario();
+
+        // crear fechas
+        LocalDate f1 = LocalDate.of(2025, 11, 11);
+        LocalDate f2 = LocalDate.of(2025, 11, 8);
+
+        // crear eventos
+        c.agregarEvento(new Evento("Tp Final", "Entrega tp final :'(", f1, TipoEvento.EXAMEN ));
+        c.agregarEvento(new Evento("llorar", ":'(", f2, TipoEvento.OTRO ));
+
+
+
+        // Probar vista mensual
+        c.mostrarCalendarioMensual(2025, 11);
+
+        // Probar vista semanal
+        c.mostrarSemana(LocalDate.of(2025, 11, 8));
+
+         */
 
 
     }
