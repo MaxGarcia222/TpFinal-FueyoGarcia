@@ -94,6 +94,6 @@ public abstract class Usuario {
     //METODOS
 
     public boolean iniciarSesion() {
-
+        return false;
     }
 }

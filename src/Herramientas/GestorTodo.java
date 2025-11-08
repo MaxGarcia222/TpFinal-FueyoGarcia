@@ -69,4 +69,26 @@ public class GestorTodo {
                 .filter(t -> !t.isCompletada())
                 .forEach(System.out::println);
     }
+
+    public void buscarPorTexto(String texto) {
+        boolean found = false;
+
+        //el for each recorre el hashSet, t.getContenido() te da el texto de la tarea (String)
+        //
+        //.toLowerCase() pasa a minúsculas
+        //
+        //.contains(texto.toLowerCase()) pregunta si la tarea contiene el texto buscado
+
+        for (TareaTodo t : tareas) {
+            if (t.getContenido().toLowerCase().contains(texto.toLowerCase())) {
+                System.out.println(t);
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No se encontraron tareas con: " + texto);
+        }
+    }
+
 }
