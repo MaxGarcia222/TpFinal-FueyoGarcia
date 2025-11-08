@@ -14,11 +14,14 @@ public class Estudiante extends Usuario {
     public Estudiante(String nombre, String email, String contrasenia, TipoUsuario tipoUsuario) {
         super(nombre, email, contrasenia, tipoUsuario);
         this.herramientas = new ArrayList<>();
+        inicializarHerramientas();
+    }
 
-        // Agregar todas las herramientas disponibles
-        herramientas.add(new Calendario());
-        herramientas.add(new GestorTodo());
+    private void inicializarHerramientas() {
+        // si tus clases tienen constructores sin argumentos:
         herramientas.add(new Notas());
+        herramientas.add(new GestorTodo());
+        herramientas.add(new Calendario());
     }
 
     public List<Herramienta> getHerramientas() {

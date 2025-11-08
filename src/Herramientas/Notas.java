@@ -85,8 +85,10 @@ public class Notas extends Herramienta{
         System.out.println("---------------------------");
         System.out.println(notas.get(titulo));
         System.out.println("---------------------------");
-        //IO.println(""); io?
+        IO.println("");
     }
+
+
 }
 
 
