@@ -18,8 +18,9 @@ public class Main {
         notas.listarNotas();
          */
 
-        /*
-        PRUEBAS TAREAS TO DO
+
+
+       //PRUEBAS TAREAS TO DO
 
         GestorTodo tareas = new GestorTodo();
         try {
@@ -28,14 +29,48 @@ public class Main {
             System.out.println("⚠ Error: " + e.getMessage());
         }
 
+        IO.println("");
+
+        try {
+            tareas.agregar("Hacer el tp final");
+        } catch (TareaException e) {
+            System.out.println("⚠ Error: " + e.getMessage());
+        }
+
+        IO.println("");
+
+
+        try {
+            tareas.agregar("Saludar al taigo");
+        } catch (TareaException e) {
+            System.out.println("⚠ Error: " + e.getMessage());
+        }
+
+        IO.println("");
+
+        try {
+            tareas.agregar("Hacer el segundo TP");
+        } catch (TareaException e) {
+            System.out.println("⚠ Error: " + e.getMessage());
+        }
+
+        IO.println("");
+
         tareas.listar();
+
+        IO.println("");
+
         try {
             tareas.completar("Hacer el tp final");
         } catch (TareaException e) {
             throw new RuntimeException(e);
         }
 
+        IO.println("");
+
         tareas.listar();
+
+        IO.println("");
 
         //aca probe desmarcarlo escribiendolo en minusculas
         try {
@@ -43,9 +78,13 @@ public class Main {
         } catch (TareaException e) {
             throw new RuntimeException(e);
         }
-        tareas.listar();
+
+        IO.println("");
+
+        //aca probe buscar si decia de tp a ver si aparecian todos
+        tareas.buscarPorTexto("tp");
 
 
-         */
+
     }
 }
