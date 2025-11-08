@@ -21,11 +21,6 @@ public class Administrador extends Usuario {
         }
     }
 
-    // Actualizar tareas a todos los estudiantes de una carrera
-    public void actualizarTareasPorCarrera(String carrera, GestorUsuarios gestor, String tarea) {
-        gestor.actualizarTareasPorCarrera(carrera, tarea);
-        System.out.println("Tareas actualizadas para los estudiantes de " + carrera + ".");
-    }
 
     // Cambiar tipo de usuario (Básico ↔ Premium)
     public void cambiarTipoUsuario(int id, GestorUsuarios gestor, TipoUsuario nuevoTipo) {
@@ -38,8 +33,4 @@ public class Administrador extends Usuario {
         }
     }
 
-    @Override
-    public String getTipoUsuario() {
-        return "";
-    }
 }

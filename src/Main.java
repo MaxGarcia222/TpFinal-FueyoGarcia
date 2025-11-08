@@ -1,114 +1,37 @@
-import Enums.TipoEvento;
-import Exceptions.TareaException;
 import Herramientas.*;
+import Usuarios.*;
+import Enums.*;
 
-import java.time.LocalDate;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Estudiante e = new Estudiante("Max", "max@gmail.com", "1234", TipoUsuario.ESTUDIANTE);
 
-        /* PRUEBAS DE LAS NOTAS
-        Notas notas = new Notas();
-        notas.agregarNota("Prueba", "Hola esto es una prueba");
-        notas.agregarNota("Prueba2", "Hola esto es otra prueba");
-
-        notas.listarNota("Prueba");
-        notas.continuarNota("Prueba", ", y ahora la sigo.");
-        notas.listarNota("Prueba");
-
-        notas.listarNotas();
-         */
-
-
-        /*
-       //PRUEBAS TAREAS TO DO
-
-        GestorTodo tareas = new GestorTodo();
-        try {
-            tareas.agregar("Hacer el tp final");
-        } catch (TareaException e) {
-            System.out.println("⚠ Error: " + e.getMessage());
+        System.out.println("=== HERRAMIENTAS DISPONIBLES ===");
+        for (Herramienta h : e.getHerramientas()) {
+            System.out.println("- " + h.getClass().getSimpleName());
         }
 
-        IO.println("");
+        System.out.print("Elegí una herramienta: ");
+        String eleccion = sc.nextLine();
 
-        try {
-            tareas.agregar("Hacer el tp final");
-        } catch (TareaException e) {
-            System.out.println("⚠ Error: " + e.getMessage());
+        Herramienta herramientaSeleccionada = e.getHerramientaPorNombre(eleccion);
+
+        if (herramientaSeleccionada != null) {
+            System.out.println("Usando " + herramientaSeleccionada.getClass().getSimpleName() + "...");
+            // Ejemplo: casteamos para usar sus métodos específicos
+            if (herramientaSeleccionada instanceof Notas notas) {
+                try {
+                    notas.agregarNota("Ejemplo", "Esta es una nota de prueba");
+                    notas.listarNotas();
+                } catch (Exception ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
+        } else {
+            System.out.println("Herramienta no encontrada.");
         }
-
-        IO.println("");
-
-
-        try {
-            tareas.agregar("Saludar al taigo");
-        } catch (TareaException e) {
-            System.out.println("⚠ Error: " + e.getMessage());
-        }
-
-        IO.println("");
-
-        try {
-            tareas.agregar("Hacer el segundo TP");
-        } catch (TareaException e) {
-            System.out.println("⚠ Error: " + e.getMessage());
-        }
-
-        IO.println("");
-
-        tareas.listar();
-
-        IO.println("");
-
-        try {
-            tareas.completar("Hacer el tp final");
-        } catch (TareaException e) {
-            throw new RuntimeException(e);
-        }
-
-        IO.println("");
-
-        tareas.listar();
-
-        IO.println("");
-
-        //aca probe desmarcarlo escribiendolo en minusculas
-        try {
-            tareas.desmarcar("hacer el tp final");
-        } catch (TareaException e) {
-            throw new RuntimeException(e);
-        }
-
-        IO.println("");
-
-        //aca probe buscar si decia de tp a ver si aparecian todos
-        tareas.buscarPorTexto("tp");
-
-         */
-
-        /*
-        //PRUEBA CALENDARIO
-        Calendario c = new Calendario();
-
-        // crear fechas
-        LocalDate f1 = LocalDate.of(2025, 11, 11);
-        LocalDate f2 = LocalDate.of(2025, 11, 8);
-
-        // crear eventos
-        c.agregarEvento(new Evento("Tp Final", "Entrega tp final :'(", f1, TipoEvento.EXAMEN ));
-        c.agregarEvento(new Evento("llorar", ":'(", f2, TipoEvento.OTRO ));
-
-
-
-        // Probar vista mensual
-        c.mostrarCalendarioMensual(2025, 11);
-
-        // Probar vista semanal
-        c.mostrarSemana(LocalDate.of(2025, 11, 8));
-
-         */
-
-
     }
 }

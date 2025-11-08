@@ -52,15 +52,6 @@ public class GestorUsuarios {
         return false;
     }
 
-    // Actualizar tareas por carrera (para admin)
-    public void actualizarTareasPorCarrera(String carrera, String tarea) {
-        for (Usuario u : usuarios.values()) {
-            if (u instanceof Estudiante e && e.getCarrera().equalsIgnoreCase(carrera)) {
-                e.agregarTarea(tarea); //HACERLO EN ESTUDIANTE
-            }
-        }
-    }
-
     //Mostrar todos los usuarios
     public void listarUsuarios() {
         for (Usuario u : usuarios.values()) {

@@ -9,7 +9,7 @@ import java.util.*;
 
 //La proxima que hagamos un tp olvidemonos de las fechas por favor :'(
 
-public class Calendario {
+public class Calendario extends Herramienta {
     private Map<LocalDate, List<Evento>> eventos = new HashMap<>();
 
     public void agregarEvento(Evento e) {

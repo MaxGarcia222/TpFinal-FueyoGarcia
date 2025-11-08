@@ -6,22 +6,19 @@ import java.util.Objects;
 
 public abstract class Usuario {
     private String nombre;
-    private String carrera;
     private String email;
     private String contrasenia;
-    //id autoincremental
     private int id;
     private static int contador = 0;
     private TipoUsuario tipoUsuario;
 
 
     //CONSTRUCTORES
-    public Usuario(String nombre, String email, String contrasenia, int id) {
+    public Usuario(String nombre, String email, String contrasenia, TipoUsuario tipoUsuario) {
         this.nombre = nombre;
         this.email = email;
         this.contrasenia = contrasenia;
         this.id = contador++;
-        this.carrera = carrera;
         this.tipoUsuario = tipoUsuario;
     }
 
@@ -29,7 +26,6 @@ public abstract class Usuario {
     }
 
     //GETTERS Y SETTERS
-
 
     public String getNombre() {
         return nombre;
@@ -59,31 +55,15 @@ public abstract class Usuario {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public static int getContador() {
-        return contador;
-    }
-
-    public static void setContador(int contador) {
-        Usuario.contador = contador;
-    }
-
-    public String getCarrera() {
-        return carrera;
-    }
-
-    public void setCarrera(String carrera) {
-        this.carrera = carrera;
+    public TipoUsuario getTipoUsuario() {
+        return tipoUsuario;
     }
 
     public void setTipoUsuario(TipoUsuario tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
     }
-    //TO STRING
 
+    //TO STRING
     @Override
     public String toString() {
         return "Usuario{" +
@@ -95,7 +75,6 @@ public abstract class Usuario {
     }
 
     //EQUALS Y HASHCODE SEGUN ID
-
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -109,18 +88,10 @@ public abstract class Usuario {
     }
 
     //METODOS
-
-
-    public void actualizarPerfil(String nuevoNombre, String nuevaCarrera){
-        this.nombre = nuevoNombre;
-        this.carrera = nuevaCarrera;
-    }
     public void cambiarContrasenia(String contrasenia) {
         this.contrasenia = contrasenia;
     }
 
-    // Metodo abstracto para diferenciar comportamientos (borrar si no se usa :))
-    public abstract String getTipoUsuario();
 
 
 
