@@ -2,15 +2,13 @@ package Herramientas;
 
 public abstract class Herramienta {
     private String nombre;
-    private String descripcion;    //Que hace masomenos, hola mabsia
-    private boolean requierePremium;
+    private String descripcion;
 
 
     //CONSTRUCTORES
-    public Herramienta(String nombre, String descripcion, boolean requierePremium) {
+    public Herramienta(String nombre, String descripcion) {
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.requierePremium = requierePremium;
     }
 
     public Herramienta() {
@@ -34,14 +32,6 @@ public abstract class Herramienta {
         this.descripcion = descripcion;
     }
 
-    public boolean isRequierePremium() {
-        return requierePremium;
-    }
-
-    public void setRequierePremium(boolean requierePremium) {
-        this.requierePremium = requierePremium;
-    }
-
     //TO STRING
 
 
@@ -49,8 +39,7 @@ public abstract class Herramienta {
     public String toString() {
         return "Herramienta{" +
                 "nombre='" + nombre + '\'' +
-                ", descripcion='" + descripcion + '\'' +
-                ", requierePremium=" + requierePremium +
+                ", descripcion='" + descripcion +
                 '}';
     }
 
