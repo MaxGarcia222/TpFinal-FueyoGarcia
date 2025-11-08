@@ -181,7 +181,7 @@ public class Calendario extends Herramienta {
                         + " " + dia.getDayOfMonth() + ":");
 
                 for (Evento e : lista) {
-                    System.out.println(" - " + e.getTitulo() + " (" + e.getTipo() + ")");
+                    System.out.println(" - " + e.getTitulo());
                 }
             }
         }
@@ -192,6 +192,7 @@ public class Calendario extends Herramienta {
 
         System.out.println();
     }
+
 
 
 
