@@ -1,22 +1,28 @@
 package Usuarios;
 
+import Enums.TipoUsuario;
+
 import java.util.Objects;
 
 public abstract class Usuario {
-    private int nombre;
+    private String nombre;
+    private String carrera;
     private String email;
     private String contrasenia;
     //id autoincremental
     private int id;
     private static int contador = 0;
+    private TipoUsuario tipoUsuario;
 
 
     //CONSTRUCTORES
-    public Usuario(int nombre, String email, String contrasenia, int id) {
+    public Usuario(String nombre, String email, String contrasenia, int id) {
         this.nombre = nombre;
         this.email = email;
         this.contrasenia = contrasenia;
         this.id = contador++;
+        this.carrera = carrera;
+        this.tipoUsuario = tipoUsuario;
     }
 
     public Usuario() {
@@ -25,11 +31,11 @@ public abstract class Usuario {
     //GETTERS Y SETTERS
 
 
-    public int getNombre() {
+    public String getNombre() {
         return nombre;
     }
 
-    public void setNombre(int nombre) {
+    public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
@@ -65,6 +71,17 @@ public abstract class Usuario {
         Usuario.contador = contador;
     }
 
+    public String getCarrera() {
+        return carrera;
+    }
+
+    public void setCarrera(String carrera) {
+        this.carrera = carrera;
+    }
+
+    public void setTipoUsuario(TipoUsuario tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
+    }
     //TO STRING
 
     @Override
@@ -93,7 +110,18 @@ public abstract class Usuario {
 
     //METODOS
 
-    public boolean iniciarSesion() {
-        return false;
+
+    public void actualizarPerfil(String nuevoNombre, String nuevaCarrera){
+        this.nombre = nuevoNombre;
+        this.carrera = nuevaCarrera;
     }
+    public void cambiarContrasenia(String contrasenia) {
+        this.contrasenia = contrasenia;
+    }
+
+    // Metodo abstracto para diferenciar comportamientos (borrar si no se usa :))
+    public abstract String getTipoUsuario();
+
+
+
 }

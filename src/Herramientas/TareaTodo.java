@@ -1,8 +1,13 @@
 package Herramientas;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TareaTodo extends Herramienta{
     private String contenido;
     private boolean completada;
+
+
 
     public TareaTodo(String contenido) {
         this.contenido = contenido;
@@ -42,4 +47,7 @@ public class TareaTodo extends Herramienta{
     public int hashCode() {
         return contenido.toLowerCase().hashCode();
     }
+
+
+
 }
