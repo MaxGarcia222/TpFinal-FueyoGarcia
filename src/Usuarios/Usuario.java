@@ -22,6 +22,7 @@ public abstract class Usuario {
         this.contrasenia = contrasenia;
         this.id = contador++;
         this.carrera = carrera;
+        this.tipoUsuario = tipoUsuario;
     }
 
     public Usuario() {
@@ -78,6 +79,9 @@ public abstract class Usuario {
         this.carrera = carrera;
     }
 
+    public void setTipoUsuario(TipoUsuario tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
+    }
     //TO STRING
 
     @Override
