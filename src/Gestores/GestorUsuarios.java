@@ -1,12 +1,13 @@
 package Gestores;
 
-import Usuarios.Estudiante;
+import Exceptions.ContraseniaIncorrectaException;
 import Usuarios.Usuario;
 
 import java.util.HashMap;
 
 public class GestorUsuarios {
-    HashMap<Integer, Usuario> usuarios;
+    private HashMap<Integer, Usuario> usuarios;
+
     public GestorUsuarios() {
         usuarios = new HashMap<>();
     }
@@ -38,19 +39,14 @@ public class GestorUsuarios {
                 System.out.println("Inicio de sesión exitoso: " + u.getNombre());
                 return u;
             }
-        }//ACA PONER EXCEPCION
-        System.out.println("Error: credenciales inválidas");
-        return null;
+        } throw new ContraseniaIncorrectaException("ERROR: Credenciales incorrectes");
     }
 
     // Eliminar usuario por ID (para admin)
     public boolean eliminarUsuario(int id) {
-        if (usuarios.containsKey(id)) {
-            usuarios.remove(id);
-            return true;
-        }
-        return false;
+        return usuarios.remove(id) != null;
     }
+
 
     //Mostrar todos los usuarios
     public void listarUsuarios() {
@@ -58,5 +54,11 @@ public class GestorUsuarios {
             System.out.println(u.toString());
         }
     }
+
+    //si mas adelante necesitamos recorrer el map
+    public HashMap<Integer, Usuario> getUsuarios() {
+        return usuarios;
+    }
+
 }
 

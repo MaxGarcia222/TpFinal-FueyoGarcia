@@ -18,7 +18,6 @@ public class Estudiante extends Usuario {
     }
 
     private void inicializarHerramientas() {
-        // si tus clases tienen constructores sin argumentos:
         herramientas.add(new Notas());
         herramientas.add(new GestorTodo());
         herramientas.add(new Calendario());

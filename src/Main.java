@@ -1,3 +1,4 @@
+import Gestores.GestorUsuarios;
 import Herramientas.*;
 import Usuarios.*;
 import Enums.TipoUsuario;
@@ -8,7 +9,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        /*Scanner sc = new Scanner(System.in);
 
         // Creamos un estudiante de ejemplo
         Estudiante estudiante = new Estudiante("Max", "max@gmail.com", "1234", TipoUsuario.ESTUDIANTE);
@@ -211,5 +212,47 @@ public class Main {
                 System.out.println("Error: " + e.getMessage());
             }
         }
+    }PRUEBA MABSIA*/
+
+        // Crear gestor
+        GestorUsuarios gestor = new GestorUsuarios();
+
+        // CREACION USUARIOS
+        Estudiante e1 = new Estudiante("Juan", "juan@mail.com", "1234", TipoUsuario.ESTUDIANTE);
+        Estudiante e2 = new Estudiante("Ana", "ana@mail.com", "abcd", TipoUsuario.ESTUDIANTE);
+        Administrador admin = new Administrador("Admin", "admin@mail.com", "admin", TipoUsuario.ADMINISTRADOR);
+
+        // AGREGARLOS AL GESTOR
+        gestor.agregarUsuario(e1);
+        gestor.agregarUsuario(e2);
+        gestor.agregarUsuario(admin);
+
+        // LISTACION DE NASCAR
+        System.out.println("LISAT DE USUARIOS");
+        gestor.listarUsuarios();
+
+        // INICIO DE SESIO (EXTIOSO)
+        System.out.println("\nIntentando iniciar sesión con 'juan@mail.com'...");
+        gestor.iniciarSesion("juan@mail.com", "1234");
+
+        // EXCEPCION DE INICIO DE SESIOM
+        System.out.println("\nIntentando iniciar sesión con contraseña incorrecta...");
+        try {
+            gestor.iniciarSesion("ana@mail.com", "malpass");
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        // CAMBIAR TIPO DE USUARIO ??????????????????
+        System.out.println("\nCambiando tipo de usuario...");
+        admin.cambiarTipoUsuario(1, gestor, TipoUsuario.ESTUDIANTE);
+
+        // ELIMINAR USUARIO
+        System.out.println("\nEliminando usuario...");
+        admin.eliminarUsuario(2, gestor);
+
+        // COMO QUEDO
+        System.out.println("\nLISTA FINAL");
+        gestor.listarUsuarios();
     }
 }

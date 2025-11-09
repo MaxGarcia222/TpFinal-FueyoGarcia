@@ -1,15 +1,18 @@
 package Usuarios;
 
 import Enums.TipoUsuario;
+import Exceptions.IdInvalidoException;
 import Gestores.GestorUsuarios;
 
 import java.sql.SQLOutput;
 
 public class Administrador extends Usuario {
-    //pensar atributos
-    // despues agrego los metodos para eliminar estudiante, cambiarle el tipo
-    // ver uysuarios, ver herramientas, subirle tareas, etc
+    public Administrador(String nombre, String email, String contrasenia, TipoUsuario tipoUsuario) {
+        super(nombre, email, contrasenia, tipoUsuario);
+    }
 
+    public Administrador() {
+    }
 
     //METODOS
     public void eliminarUsuario(int id, GestorUsuarios gestor) {
@@ -17,12 +20,12 @@ public class Administrador extends Usuario {
         if (eliminado) {
             System.out.println("Usuario con ID " + id + " eliminado correctamente.");
         } else {
-            System.out.println("No se encontró ningún usuario con ese ID.");
+            throw new IdInvalidoException("ERROR: id no encontrado");
         }
     }
 
 
-    // Cambiar tipo de usuario (Básico ↔ Premium)
+    // Cambiar tipo de usuario
     public void cambiarTipoUsuario(int id, GestorUsuarios gestor, TipoUsuario nuevoTipo) {
         Usuario u = gestor.buscarUsuarioPorId(id);
         if (u instanceof Estudiante e) {
