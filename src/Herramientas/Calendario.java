@@ -95,7 +95,7 @@ public class Calendario extends Herramienta {
 
         //imprime el nombre del mes en español y el año
         System.out.println("\n    " + inicio.getMonth().getDisplayName(TextStyle.FULL, new Locale("es")) + " " + anio);
-        System.out.println("Lu Ma Mi Ju Vi Sa Do");
+        System.out.println("Lu  Ma  Mi  Ju  Vi  Sa  Do");
 
         for (int i = 0; i < espaciosIniciales; i++) {
             System.out.print("   ");

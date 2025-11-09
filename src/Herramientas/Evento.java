@@ -21,10 +21,8 @@ public class Evento {
 
     @Override
     public String toString() {
-        return "Evento{" +
-                "titulo='" + titulo + '\'' +
-                ", descripcion='" + descripcion + '\'' +
-                ", fecha=" + fecha +
-                '}';
+        return fecha +
+                " --> " + titulo +
+                ": " + descripcion;
     }
 }
