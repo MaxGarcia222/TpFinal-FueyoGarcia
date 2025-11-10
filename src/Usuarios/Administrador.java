@@ -3,13 +3,12 @@ package Usuarios;
 import Enums.TipoUsuario;
 import Exceptions.IdInvalidoException;
 import Gestores.GestorUsuarios;
+import Interfaz.JSON;
 import org.json.JSONObject;
 
 import java.sql.SQLOutput;
 
-public class Administrador extends Usuario {
-
-    //CONSTRUCORES
+public class Administrador extends Usuario implements JSON<Administrador> {
     public Administrador(String nombre, String email, String contrasenia, TipoUsuario tipoUsuario) {
         super(nombre, email, contrasenia, tipoUsuario);
     }
@@ -55,12 +54,25 @@ public class Administrador extends Usuario {
         return json;
     }
 
-    public static Administrador fromJSON(JSONObject json) {
-        return new Administrador(
-                json.getString("nombre"),
-                json.getString("email"),
-                json.getString("contrasenia"),
-                TipoUsuario.valueOf(json.getString("tipoUsuario"))
+    @Override
+    public Administrador fromJson(JSONObject obj) {
+        Administrador a = new Administrador(
+                obj.getString("nombre"),
+                obj.getString("email"),
+                obj.getString("contrasenia"),
+                (TipoUsuario.valueOf(obj.getString("tipoUsuario")))
+
         );
+
+        try {
+            var field = Usuario.class.getDeclaredField("id");
+            field.setAccessible(true);
+            field.set(a, obj.getInt("id"));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return a;
     }
+
 }
