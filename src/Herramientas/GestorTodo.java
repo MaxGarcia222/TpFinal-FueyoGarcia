@@ -2,6 +2,8 @@ package Herramientas;
 import Exceptions.TareaException;
 import java.util.HashSet;
 import java.util.Set;
+import org.json.JSONObject;
+import org.json.JSONArray;
 
 public class GestorTodo extends Herramienta{
 
@@ -90,5 +92,4 @@ public class GestorTodo extends Herramienta{
             System.out.println("No se encontraron tareas con: " + texto);
         }
     }
-
 }

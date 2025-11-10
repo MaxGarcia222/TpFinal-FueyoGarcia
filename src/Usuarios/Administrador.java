@@ -16,6 +16,12 @@ public class Administrador extends Usuario implements JSON<Administrador> {
     public Administrador() {
     }
 
+    public Administrador(String nombre, String email, String contrasenia, int id, TipoUsuario tipoUsuario) {
+        super(nombre, email, contrasenia, id, tipoUsuario);
+    }
+    //CONTRUCTOR PARA JSON
+
+
     //METODOS
     public void eliminarUsuario(int id, GestorUsuarios gestor) {
         boolean eliminado = gestor.eliminarUsuario(id);
@@ -38,17 +44,14 @@ public class Administrador extends Usuario implements JSON<Administrador> {
         }
     }
 
+    //METODOS JSON
 
 
     @Override
-    public JSONObject toJson() {
-        JSONObject obj = new JSONObject();
-        obj.put("nombre", getNombre());
-        obj.put("email", getEmail());
-        obj.put("contrasenia", getContrasenia());
-        obj.put("id", getId());
-        obj.put("tipoUsuario", getTipoUsuario().name());
-        return obj;
+    public JSONObject toJSON() {
+        JSONObject json = super.toJSON();
+        json.put("tipo", "Administrador");
+        return json;
     }
 
     @Override
@@ -71,4 +74,5 @@ public class Administrador extends Usuario implements JSON<Administrador> {
 
         return a;
     }
+
 }

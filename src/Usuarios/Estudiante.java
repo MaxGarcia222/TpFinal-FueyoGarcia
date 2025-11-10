@@ -10,14 +10,35 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.json.JSONObject;
+import org.json.JSONArray;
 
 public class Estudiante extends Usuario implements JSON<Usuario> {
     private List<Herramienta> herramientas;
 
+    //CONSTRUCTORES
     public Estudiante(String nombre, String email, String contrasenia, TipoUsuario tipoUsuario) {
         super(nombre, email, contrasenia, tipoUsuario);
         this.herramientas = new ArrayList<>();
         inicializarHerramientas();
+    }
+    public Estudiante() {}
+
+    //CONSTRUCTOR PARA JSON
+
+
+    public Estudiante(String nombre, String email, String contrasenia, TipoUsuario tipoUsuario, List<Herramienta> herramientas) {
+        super(nombre, email, contrasenia, tipoUsuario);
+        this.herramientas = herramientas;
+    }
+
+    public Estudiante(List<Herramienta> herramientas) {
+        this.herramientas = herramientas;
+    }
+
+    public Estudiante(String nombre, String email, String contrasenia, int id, TipoUsuario tipoUsuario, List<Herramienta> herramientas) {
+        super(nombre, email, contrasenia, id, tipoUsuario);
+        this.herramientas = herramientas;
     }
 
     private void inicializarHerramientas() {
@@ -39,16 +60,19 @@ public class Estudiante extends Usuario implements JSON<Usuario> {
         return null;
     }
 
+    public void setHerramientas(List<Herramienta> herramientas) {
+        this.herramientas = herramientas;
+    }
+
+    //METODOS JSON
+
 
     @Override
-    public JSONObject toJson() {
-        JSONObject obj = new JSONObject();
-        obj.put("nombre", getNombre());
-        obj.put("email", getEmail());
-        obj.put("contrasenia", getContrasenia());
-        obj.put("id", getId());
-        obj.put("tipoUsuario", getTipoUsuario().name());
-        return obj;    }
+    public JSONObject toJSON() {
+        JSONObject json = super.toJSON();
+        json.put("tipo", "Estudiante");
+        return json;
+    }
 
     @Override
     public Usuario fromJson(JSONObject obj) {
@@ -70,4 +94,5 @@ public class Estudiante extends Usuario implements JSON<Usuario> {
 
         return e;
     }
+
 }
