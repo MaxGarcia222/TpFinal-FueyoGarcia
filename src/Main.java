@@ -214,7 +214,7 @@ public class Main {
         }
     }PRUEBA MABSIA*/
 
-        // Crear gestor
+        /*PRUEBA TIAGOBACH Crear gestor
         GestorUsuarios gestor = new GestorUsuarios();
 
         // CREACION USUARIOS
@@ -254,5 +254,22 @@ public class Main {
         // COMO QUEDO
         System.out.println("\nLISTA FINAL");
         gestor.listarUsuarios();
+    }*/
+        //PRUEBA JSON DE MIERDA
+    GestorUsuarios gestor = new GestorUsuarios();
+
+        Estudiante e1 = new Estudiante("Lucas", "lucas@mail.com", "1234", TipoUsuario.ESTUDIANTE);
+        Administrador a1 = new Administrador("Tiago", "admin@mail.com", "admin123", TipoUsuario.ADMINISTRADOR);
+
+        gestor.agregarUsuario(e1);
+        gestor.agregarUsuario(a1);
+
+        // Guardar en JSON
+        gestor.guardarUsuariosJSON("usuarios.json");
+
+        // Simular reinicio → cargar desde archivo
+        GestorUsuarios gestorNuevo = new GestorUsuarios();
+        gestorNuevo.cargarUsuariosJSON("usuarios.json");
     }
+
 }

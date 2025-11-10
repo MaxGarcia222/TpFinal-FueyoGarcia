@@ -4,7 +4,10 @@ import Enums.TipoUsuario;
 
 import java.util.Objects;
 
-public abstract class Usuario {
+import Interfaz.ConvertibleaJSON;
+import org.json.JSONObject;
+
+public abstract class Usuario implements ConvertibleaJSON {
     private String nombre;
     private String email;
     private String contrasenia;
@@ -24,6 +27,17 @@ public abstract class Usuario {
 
     public Usuario() {
     }
+
+    //CONSTRUCTOR PARA JSON
+
+    public Usuario(String nombre, String email, String contrasenia, int id, TipoUsuario tipoUsuario) {
+        this.nombre = nombre;
+        this.email = email;
+        this.contrasenia = contrasenia;
+        this.id = id;
+        this.tipoUsuario = tipoUsuario;
+    }
+
 
     //GETTERS Y SETTERS
 
@@ -92,7 +106,22 @@ public abstract class Usuario {
         this.contrasenia = contrasenia;
     }
 
+    //METODOS PARA JSON
 
+    public JSONObject toJSON() {
+        JSONObject json = new JSONObject();
+        json.put("id", id);
+        json.put("nombre", nombre);
+        json.put("email", email);
+        json.put("contrasenia", contrasenia);
+        json.put("tipoUsuario", tipoUsuario.toString());
+        return json;
+    }
+
+    public static Usuario fromJSON(JSONObject json) {
+        // Como es abstractalo implementan las subclases
+        return null;
+    }
 
 
 }

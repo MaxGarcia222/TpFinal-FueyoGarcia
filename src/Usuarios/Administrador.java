@@ -3,16 +3,25 @@ package Usuarios;
 import Enums.TipoUsuario;
 import Exceptions.IdInvalidoException;
 import Gestores.GestorUsuarios;
+import org.json.JSONObject;
 
 import java.sql.SQLOutput;
 
 public class Administrador extends Usuario {
+
+    //CONSTRUCORES
     public Administrador(String nombre, String email, String contrasenia, TipoUsuario tipoUsuario) {
         super(nombre, email, contrasenia, tipoUsuario);
     }
 
     public Administrador() {
     }
+
+    public Administrador(String nombre, String email, String contrasenia, int id, TipoUsuario tipoUsuario) {
+        super(nombre, email, contrasenia, id, tipoUsuario);
+    }
+    //CONTRUCTOR PARA JSON
+
 
     //METODOS
     public void eliminarUsuario(int id, GestorUsuarios gestor) {
@@ -36,4 +45,22 @@ public class Administrador extends Usuario {
         }
     }
 
+    //METODOS JSON
+
+
+    @Override
+    public JSONObject toJSON() {
+        JSONObject json = super.toJSON();
+        json.put("tipo", "Administrador");
+        return json;
+    }
+
+    public static Administrador fromJSON(JSONObject json) {
+        return new Administrador(
+                json.getString("nombre"),
+                json.getString("email"),
+                json.getString("contrasenia"),
+                TipoUsuario.valueOf(json.getString("tipoUsuario"))
+        );
+    }
 }

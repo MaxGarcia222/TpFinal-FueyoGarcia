@@ -2,6 +2,7 @@ package Herramientas;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.json.JSONObject;
 
 public class TareaTodo extends Herramienta{
     private String contenido;
@@ -47,7 +48,5 @@ public class TareaTodo extends Herramienta{
     public int hashCode() {
         return contenido.toLowerCase().hashCode();
     }
-
-
 
 }
