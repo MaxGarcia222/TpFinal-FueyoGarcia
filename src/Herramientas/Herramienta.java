@@ -1,5 +1,4 @@
 package Herramientas;
-import org.json.JSONObject;
 
 public abstract class Herramienta {
     private String nombre;

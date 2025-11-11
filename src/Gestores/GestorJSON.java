@@ -10,10 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
 public class GestorJSON<T extends ConvertibleaJSON> {
 
     private final DesdeJSON<T> convertidor;
-    private final String rutaArchivo; // ejemplo: "usuarios.json"
+    private final String rutaArchivo; // por ejemplo: "usuarios.json"
 
     public GestorJSON(String rutaArchivo, DesdeJSON<T> convertidor) {
         this.rutaArchivo = rutaArchivo;
