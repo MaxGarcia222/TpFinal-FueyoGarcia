@@ -83,20 +83,23 @@ public class GestorUsuarios {
 
             for (int i = 0; i < array.length(); i++) {
                 JSONObject obj = array.getJSONObject(i);
-                String tipo = obj.optString("tipo");
+                String tipo = obj.optString("tipoUsuario");
 
                 Usuario u = null;
-                if (tipo.equalsIgnoreCase("Administrador")) {
-                    u = Administrador.fromJSON(obj);
-                } else if (tipo.equalsIgnoreCase("Estudiante")) {
-                    u = Estudiante.fromJSON(obj);
+
+                if (tipo.equalsIgnoreCase("ADMIN") || tipo.equalsIgnoreCase("ADMINISTRADOR")) {
+                    u = new Administrador(); // creamos el objeto
+                    u.fromJSON(obj);
+                } else if (tipo.equalsIgnoreCase("ESTUDIANTE")) {
+                    u = new Estudiante();
+                    u.fromJSON(obj);
                 }
 
                 if (u != null) usuarios.put(u.getId(), u);
             }
             System.out.println("Usuarios cargados desde " + archivo);
         } catch (Exception e) {
-            System.out.println("⚠Error al leer usuarios: " + e.getMessage());
+            System.out.println("Error al leer usuarios: " + e.getMessage());
         }
     }
 }

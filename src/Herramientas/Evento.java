@@ -1,8 +1,5 @@
 package Herramientas;
-import Enums.TipoEvento;
-
 import java.time.LocalDate;
-import org.json.JSONObject;
 
 public class Evento {
     private String titulo;

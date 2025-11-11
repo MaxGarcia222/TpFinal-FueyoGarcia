@@ -3,49 +3,191 @@ import Herramientas.*;
 import Usuarios.*;
 import Enums.TipoUsuario;
 import Exceptions.*;
+import Gestores.GestorJSON;
+import Gestores.JsonUtiles;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        /*Scanner sc = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
+        GestorUsuarios gestorUsuarios = new GestorUsuarios();
 
-        // Creamos un estudiante de ejemplo
-        Estudiante estudiante = new Estudiante("Max", "max@gmail.com", "1234", TipoUsuario.ESTUDIANTE);
+        // ====== USUARIOS DE PRUEBA ======
+        Estudiante est1 = new Estudiante("Max", "max@gmail.com", "1234", TipoUsuario.ESTUDIANTE);
+        Estudiante est2 = new Estudiante("Tiago", "tiago@gmail.com", "5678", TipoUsuario.ESTUDIANTE);
+        Administrador admin = new Administrador("Profe", "admin@gmail.com", "admin", TipoUsuario.ADMINISTRADOR);
 
-        // Instancias de herramientas
+        gestorUsuarios.agregarUsuario(est1);
+        gestorUsuarios.agregarUsuario(est2);
+        gestorUsuarios.agregarUsuario(admin);
+
+        // ====== GESTOR JSON ======
+        GestorJSON<Usuario> gestorJSON = new GestorJSON<>("usuarios.json", obj -> {
+            Usuario u;
+            String tipo = obj.getString("tipoUsuario");
+            if (tipo.equalsIgnoreCase("ADMIN")) {
+                u = new Administrador();
+            } else {
+                u = new Estudiante();
+            }
+            u.fromJSON(obj);
+            return u;
+        });
+
+        Usuario usuarioActual = null;
+        boolean salir = false;
+
+        while (!salir) {
+            System.out.println("\n===== MENU PRINCIPAL =====");
+            System.out.println("1. Iniciar sesion");
+            System.out.println("2. Registrarse");
+            System.out.println("3. Guardar usuarios en JSON");
+            System.out.println("4. Cargar usuarios desde JSON");
+            System.out.println("0. Salir");
+            System.out.print("Opcion: ");
+            String opcion = sc.nextLine();
+
+            switch (opcion) {
+                case "1" -> {
+                    try {
+                        System.out.print("Email: ");
+                        String email = sc.nextLine();
+                        System.out.print("Contraseña: ");
+                        String pass = sc.nextLine();
+
+                        usuarioActual = gestorUsuarios.iniciarSesion(email, pass);
+
+                        if (usuarioActual instanceof Administrador adminLog) {
+                            menuAdmin(adminLog, gestorUsuarios, sc);
+                        } else if (usuarioActual instanceof Estudiante est) {
+                            menuEstudiante(est, sc);
+                        }
+                    } catch (ContraseniaIncorrectaException e) {
+                        System.out.println("x " + e.getMessage());
+                    }
+                }
+
+                case "2" -> registrarse(sc, gestorUsuarios);
+
+                case "3" -> {
+                    List<Usuario> lista = new ArrayList<>(gestorUsuarios.getUsuarios().values());
+                    gestorJSON.guardar(lista);
+                    System.out.println("Usuarios guardados correctamente en JSON.");
+                }
+
+                case "4" -> {
+                    List<Usuario> cargados = gestorJSON.cargar();
+                    System.out.println("Usuarios cargados desde JSON:");
+                    for (Usuario u : cargados) {
+                        System.out.println("- " + u.getNombre() + " (" + u.getTipoUsuario() + ")");
+                    }
+                }
+
+                case "0" -> salir = true;
+
+                default -> System.out.println("Opcion no valida.");
+            }
+        }
+
+        System.out.println("¡Nos vemos en Disney Channel!");
+    }
+
+    // ================= REGISTRARSE =================
+    private static void registrarse(Scanner sc, GestorUsuarios gestor) {
+        System.out.println("\n--- REGISTRO DE NUEVO USUARIO ---");
+        System.out.print("Nombre: ");
+        String nombre = sc.nextLine();
+        System.out.print("Email: ");
+        String email = sc.nextLine();
+        System.out.print("Contraseña: ");
+        String contrasenia = sc.nextLine();
+
+        if (gestor.buscarUsuarioPorEmail(email) != null) {
+            System.out.println("Error, Ya existe un usuario con ese correo.");
+            return;
+        }
+
+        Estudiante nuevo = new Estudiante(nombre, email, contrasenia, TipoUsuario.ESTUDIANTE);
+        gestor.agregarUsuario(nuevo);
+        System.out.println("Registro exitoso ¡Bienvenido/a, " + nombre + "!");
+    }
+
+    // ================= MENÚ ADMIN =================
+    private static void menuAdmin(Administrador admin, GestorUsuarios gestor, Scanner sc) {
+        boolean volver = false;
+        while (!volver) {
+            System.out.println("\n--- MENU ADMINISTRADOR ---");
+            System.out.println("1. Listar usuarios");
+            System.out.println("2. Cambiar tipo de usuario");
+            System.out.println("3. Eliminar usuario");
+            System.out.println("0. Cerrar sesion");
+            System.out.print("Opcion: ");
+            String op = sc.nextLine();
+
+            try {
+                switch (op) {
+                    case "1" -> gestor.listarUsuarios();
+                    case "2" -> {
+                        System.out.print("ID del usuario: ");
+                        int id = Integer.parseInt(sc.nextLine());
+                        System.out.print("Nuevo tipo (1=ESTUDIANTE, 2=ADMIN): ");
+                        int tipo = Integer.parseInt(sc.nextLine());
+                        TipoUsuario nuevoTipo = (tipo == 1)
+                                ? TipoUsuario.ESTUDIANTE
+                                : TipoUsuario.ADMINISTRADOR;
+                        admin.cambiarTipoUsuario(id, gestor, nuevoTipo);
+                    }
+                    case "3" -> {
+                        System.out.print("ID del usuario: ");
+                        int id = Integer.parseInt(sc.nextLine());
+                        admin.eliminarUsuario(id, gestor);
+                    }
+                    case "0" -> volver = true;
+                    default -> System.out.println("Opcion invalida.");
+                }
+            } catch (IdInvalidoException e) {
+                System.out.println("x " + e.getMessage());
+            } catch (Exception e) {
+                System.out.println("Error inesperado: " + e.getMessage());
+            }
+        }
+    }
+
+    // ================= MENÚ ESTUDIANTE =================
+    private static void menuEstudiante(Estudiante estudiante, Scanner sc) {
+        boolean volver = false;
         Notas notas = new Notas();
         GestorTodo gestor = new GestorTodo();
         Calendario calendario = new Calendario();
 
-        boolean salir = false;
-        while (!salir) {
-            System.out.println("\n===== MENÚ PRINCIPAL =====");
+        while (!volver) {
+            System.out.println("\n===== MENU ESTUDIANTE(no es comida) =====");
             System.out.println("1. Notas");
             System.out.println("2. Gestor ToDo");
             System.out.println("3. Calendario");
-            System.out.println("0. Salir");
-            System.out.print("Elija una opción: ");
+            System.out.println("0. Cerrar sesion");
+            System.out.print("Opcion: ");
             String opcion = sc.nextLine();
 
             switch (opcion) {
                 case "1" -> menuNotas(notas, sc);
                 case "2" -> menuToDo(gestor, sc);
                 case "3" -> menuCalendario(calendario, sc);
-                case "0" -> salir = true;
-                default -> System.out.println("Opción no válida.");
+                case "0" -> volver = true;
+                default -> System.out.println("Opcion no valida.");
             }
         }
-
-        System.out.println("¡Hasta luego!");
     }
 
     // ================= MENÚ NOTAS =================
     private static void menuNotas(Notas notas, Scanner sc) {
         boolean volver = false;
         while (!volver) {
-            System.out.println("\n--- MENÚ NOTAS ---");
+            System.out.println("\n--- MENU NOTAS ---");
             System.out.println("1. Agregar nota");
             System.out.println("2. Editar nota");
             System.out.println("3. Continuar nota");
@@ -60,14 +202,14 @@ public class Main {
             try {
                 switch (op) {
                     case "1" -> {
-                        System.out.print("Título: ");
+                        System.out.print("Titulo: ");
                         String titulo = sc.nextLine();
                         System.out.print("Contenido: ");
                         String contenido = sc.nextLine();
                         notas.agregarNota(titulo, contenido);
                     }
                     case "2" -> {
-                        System.out.print("Título: ");
+                        System.out.print("Titulo: ");
                         String titulo = sc.nextLine();
                         System.out.print("Nuevo contenido: ");
                         String nuevo = sc.nextLine();
@@ -99,19 +241,19 @@ public class Main {
                     }
                     case "7" -> notas.listarNotas();
                     case "0" -> volver = true;
-                    default -> System.out.println("Opción inválida.");
+                    default -> System.out.println("Opcion invalida.");
                 }
             } catch (NotaException e) {
-                System.out.println("Error: " + e.getMessage());
+                System.out.println("x" + e.getMessage());
             }
         }
     }
 
-    // ================= MENÚ TODO =================
+    // ================= MENU TODO =================
     private static void menuToDo(GestorTodo gestor, Scanner sc) {
         boolean volver = false;
         while (!volver) {
-            System.out.println("\n--- MENÚ TODO ---");
+            System.out.println("\n--- MENU ToDo ---");
             System.out.println("1. Agregar tarea");
             System.out.println("2. Completar tarea");
             System.out.println("3. Desmarcar tarea");
@@ -121,7 +263,7 @@ public class Main {
             System.out.println("7. Listar pendientes");
             System.out.println("8. Buscar por texto");
             System.out.println("0. Volver");
-            System.out.print("Opción: ");
+            System.out.print("Opcion: ");
             String op = sc.nextLine();
 
             try {
@@ -154,26 +296,26 @@ public class Main {
                         gestor.buscarPorTexto(sc.nextLine());
                     }
                     case "0" -> volver = true;
-                    default -> System.out.println("Opción inválida.");
+                    default -> System.out.println("Opcion invalida.");
                 }
             } catch (TareaException e) {
-                System.out.println("Error: " + e.getMessage());
+                System.out.println("x" + e.getMessage());
             }
         }
     }
 
-    // ================= MENÚ CALENDARIO =================
+    // ================= MENU CALENDARIO =================
     private static void menuCalendario(Calendario calendario, Scanner sc) {
         boolean volver = false;
         while (!volver) {
-            System.out.println("\n--- MENÚ CALENDARIO ---");
+            System.out.println("\n--- MENU CALENDARIO ---");
             System.out.println("1. Agregar evento");
             System.out.println("2. Mostrar eventos de una fecha");
             System.out.println("3. Mostrar todos los eventos");
             System.out.println("4. Mostrar calendario mensual");
             System.out.println("5. Mostrar semana");
             System.out.println("0. Volver");
-            System.out.print("Opción: ");
+            System.out.print("Opcion: ");
             String op = sc.nextLine();
 
             try {
@@ -183,7 +325,7 @@ public class Main {
                         String titulo = sc.nextLine();
                         System.out.print("Fecha (YYYY-MM-DD): ");
                         LocalDate fecha = LocalDate.parse(sc.nextLine());
-                        System.out.print("Descripcion: ");
+                        System.out.print("Descripción: ");
                         String descripcion = sc.nextLine();
                         calendario.agregarEvento(new Evento(titulo, descripcion, fecha));
                     }
@@ -206,70 +348,11 @@ public class Main {
                         calendario.mostrarSemana(fecha);
                     }
                     case "0" -> volver = true;
-                    default -> System.out.println("Opción inválida.");
+                    default -> System.out.println("Opcion invalida.");
                 }
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
             }
         }
-    }PRUEBA MABSIA*/
-
-        /*PRUEBA TIAGOBACH Crear gestor
-        GestorUsuarios gestor = new GestorUsuarios();
-
-        // CREACION USUARIOS
-        Estudiante e1 = new Estudiante("Juan", "juan@mail.com", "1234", TipoUsuario.ESTUDIANTE);
-        Estudiante e2 = new Estudiante("Ana", "ana@mail.com", "abcd", TipoUsuario.ESTUDIANTE);
-        Administrador admin = new Administrador("Admin", "admin@mail.com", "admin", TipoUsuario.ADMINISTRADOR);
-
-        // AGREGARLOS AL GESTOR
-        gestor.agregarUsuario(e1);
-        gestor.agregarUsuario(e2);
-        gestor.agregarUsuario(admin);
-
-        // LISTACION DE NASCAR
-        System.out.println("LISAT DE USUARIOS");
-        gestor.listarUsuarios();
-
-        // INICIO DE SESIO (EXTIOSO)
-        System.out.println("\nIntentando iniciar sesión con 'juan@mail.com'...");
-        gestor.iniciarSesion("juan@mail.com", "1234");
-
-        // EXCEPCION DE INICIO DE SESIOM
-        System.out.println("\nIntentando iniciar sesión con contraseña incorrecta...");
-        try {
-            gestor.iniciarSesion("ana@mail.com", "malpass");
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
-
-        // CAMBIAR TIPO DE USUARIO ??????????????????
-        System.out.println("\nCambiando tipo de usuario...");
-        admin.cambiarTipoUsuario(1, gestor, TipoUsuario.ESTUDIANTE);
-
-        // ELIMINAR USUARIO
-        System.out.println("\nEliminando usuario...");
-        admin.eliminarUsuario(2, gestor);
-
-        // COMO QUEDO
-        System.out.println("\nLISTA FINAL");
-        gestor.listarUsuarios();
-    }*/
-        //PRUEBA JSON DE MIERDA
-    GestorUsuarios gestor = new GestorUsuarios();
-
-        Estudiante e1 = new Estudiante("Lucas", "lucas@mail.com", "1234", TipoUsuario.ESTUDIANTE);
-        Administrador a1 = new Administrador("Tiago", "admin@mail.com", "admin123", TipoUsuario.ADMINISTRADOR);
-
-        gestor.agregarUsuario(e1);
-        gestor.agregarUsuario(a1);
-
-        // Guardar en JSON
-        gestor.guardarUsuariosJSON("usuarios.json");
-
-        // Simular reinicio → cargar desde archivo
-        GestorUsuarios gestorNuevo = new GestorUsuarios();
-        gestorNuevo.cargarUsuariosJSON("usuarios.json");
     }
-
 }

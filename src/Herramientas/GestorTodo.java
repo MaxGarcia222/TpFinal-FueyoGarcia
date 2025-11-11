@@ -2,8 +2,6 @@ package Herramientas;
 import Exceptions.TareaException;
 import java.util.HashSet;
 import java.util.Set;
-import org.json.JSONObject;
-import org.json.JSONArray;
 
 public class GestorTodo extends Herramienta{
 

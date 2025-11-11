@@ -5,7 +5,8 @@ import Herramientas.Calendario;
 import Herramientas.GestorTodo;
 import Herramientas.Herramienta;
 import Herramientas.Notas;
-import Interfaz.JSON;
+import Interfaz.ConvertibleaJSON;
+import Interfaz.DesdeJSON;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.List;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
-public class Estudiante extends Usuario implements JSON<Usuario> {
+public class Estudiante extends Usuario {
     private List<Herramienta> herramientas;
 
     //CONSTRUCTORES
@@ -69,30 +70,15 @@ public class Estudiante extends Usuario implements JSON<Usuario> {
 
     @Override
     public JSONObject toJSON() {
-        JSONObject json = super.toJSON();
-        json.put("tipo", "Estudiante");
-        return json;
+        JSONObject obj = super.toJSON();
+        // (opcional: agregar herramientas en el futuro)
+        return obj;
     }
 
     @Override
-    public Usuario fromJson(JSONObject obj) {
-        Estudiante e = new Estudiante(
-                obj.getString("nombre"),
-                obj.getString("email"),
-                obj.getString("contrasenia"),
-                (TipoUsuario.valueOf(obj.getString("tipoUsuario")))
-        );
-
-        //restaura el ID
-        try {
-            var field = Usuario.class.getDeclaredField("id");
-            field.setAccessible(true);
-            field.set(e, obj.getInt("id"));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        return e;
+    public Estudiante fromJSON(JSONObject obj) {
+        super.fromJSON(obj);
+        return this;
     }
 
 }
