@@ -1,0 +1,31 @@
+[
+    {
+        "contrasenia": "1234",
+        "tipoUsuario": "ESTUDIANTE",
+        "id": 0,
+        "nombre": "Max",
+        "email": "max@gmail.com"
+    },
+    {
+        "contrasenia": "5678",
+        "tipoUsuario": "ESTUDIANTE",
+        "id": 1,
+        "nombre": "Tiago",
+        "email": "tiago@gmail.com"
+    },
+    {
+        "tipo": "Administrador",
+        "contrasenia": "admin",
+        "tipoUsuario": "ADMINISTRADOR",
+        "id": 2,
+        "nombre": "Profe",
+        "email": "admin@gmail.com"
+    },
+    {
+        "contrasenia": "pedro",
+        "tipoUsuario": "ESTUDIANTE",
+        "id": 3,
+        "nombre": "pedro",
+        "email": "pedro@gmail.com"
+    }
+]

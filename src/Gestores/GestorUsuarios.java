@@ -1,12 +1,18 @@
 package Gestores;
 
+import Exceptions.ContraseniaIncorrectaException;
+import Usuarios.Administrador;
 import Usuarios.Estudiante;
 import Usuarios.Usuario;
 
 import java.util.HashMap;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+import org.json.JSONArray;
 
 public class GestorUsuarios {
-    HashMap<Integer, Usuario> usuarios;
+    private HashMap<Integer, Usuario> usuarios;
+
     public GestorUsuarios() {
         usuarios = new HashMap<>();
     }
@@ -38,33 +44,62 @@ public class GestorUsuarios {
                 System.out.println("Inicio de sesión exitoso: " + u.getNombre());
                 return u;
             }
-        }//ACA PONER EXCEPCION
-        System.out.println("Error: credenciales inválidas");
-        return null;
+        } throw new ContraseniaIncorrectaException("ERROR: Credenciales incorrectes");
     }
 
     // Eliminar usuario por ID (para admin)
     public boolean eliminarUsuario(int id) {
-        if (usuarios.containsKey(id)) {
-            usuarios.remove(id);
-            return true;
-        }
-        return false;
+        return usuarios.remove(id) != null;
     }
 
-    // Actualizar tareas por carrera (para admin)
-    public void actualizarTareasPorCarrera(String carrera) {
-        for (Usuario u : usuarios.values()) {
-            if (u instanceof Estudiante e && e.getCarrera().equalsIgnoreCase(carrera)) {
-                e.actualizarTareas(); //HACERLO EN TAREASTODO
-            }
-        }
-    }
 
     //Mostrar todos los usuarios
     public void listarUsuarios() {
         for (Usuario u : usuarios.values()) {
             System.out.println(u.toString());
+        }
+    }
+
+    //si mas adelante necesitamos recorrer el map
+    public HashMap<Integer, Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    //METODOS PARA JSON
+
+    public void guardarUsuariosJSON(String archivo) {
+        JSONArray array = new JSONArray();
+        for (Usuario u : usuarios.values()) {
+            array.put(u.toJSON());
+        }
+        JsonUtiles.grabarUnJson(array, archivo);
+        System.out.println("Usuarios guardados en " + archivo);
+    }
+
+    public void cargarUsuariosJSON(String archivo) {
+        try {
+            String contenido = JsonUtiles.leer(archivo);
+            JSONArray array = new JSONArray(contenido);
+
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject obj = array.getJSONObject(i);
+                String tipo = obj.optString("tipoUsuario");
+
+                Usuario u = null;
+
+                if (tipo.equalsIgnoreCase("ADMIN") || tipo.equalsIgnoreCase("ADMINISTRADOR")) {
+                    u = new Administrador(); // creamos el objeto
+                    u.fromJSON(obj);
+                } else if (tipo.equalsIgnoreCase("ESTUDIANTE")) {
+                    u = new Estudiante();
+                    u.fromJSON(obj);
+                }
+
+                if (u != null) usuarios.put(u.getId(), u);
+            }
+            System.out.println("Usuarios cargados desde " + archivo);
+        } catch (Exception e) {
+            System.out.println("Error al leer usuarios: " + e.getMessage());
         }
     }
 }

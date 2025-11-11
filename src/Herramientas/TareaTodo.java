@@ -1,18 +1,14 @@
 package Herramientas;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class TareaTodo extends Herramienta{
     private String contenido;
     private boolean completada;
-    private List<String> tareas;
+
 
 
     public TareaTodo(String contenido) {
         this.contenido = contenido;
         this.completada = false;
-        tareas = new ArrayList<>();
     }
 
     public String getContenido() {
@@ -47,18 +43,6 @@ public class TareaTodo extends Herramienta{
     @Override
     public int hashCode() {
         return contenido.toLowerCase().hashCode();
-    }
-
-    //METODOS PARA LA LIST
-    public void agregarTarea(String tarea) {
-        tareas.add(tarea);
-    }
-
-    public void mostrarTareas() {
-        System.out.println("Tus tareas:");
-        for (String t : tareas) {
-            System.out.println("- " + t);
-        }
     }
 
 }

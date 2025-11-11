@@ -4,31 +4,43 @@ import Enums.TipoUsuario;
 
 import java.util.Objects;
 
-public abstract class Usuario {
+import Interfaz.ConvertibleaJSON;
+import Interfaz.DesdeJSON;
+import org.json.JSONObject;
+
+public abstract class Usuario implements ConvertibleaJSON, DesdeJSON {
     private String nombre;
-    private String carrera;
     private String email;
     private String contrasenia;
-    //id autoincremental
     private int id;
     private static int contador = 0;
     private TipoUsuario tipoUsuario;
 
 
     //CONSTRUCTORES
-    public Usuario(String nombre, String email, String contrasenia, int id) {
+    public Usuario(String nombre, String email, String contrasenia, TipoUsuario tipoUsuario) {
         this.nombre = nombre;
         this.email = email;
         this.contrasenia = contrasenia;
         this.id = contador++;
-        this.carrera = carrera;
+        this.tipoUsuario = tipoUsuario;
     }
 
     public Usuario() {
     }
 
-    //GETTERS Y SETTERS
+    //CONSTRUCTOR PARA JSON
 
+    public Usuario(String nombre, String email, String contrasenia, int id, TipoUsuario tipoUsuario) {
+        this.nombre = nombre;
+        this.email = email;
+        this.contrasenia = contrasenia;
+        this.id = id;
+        this.tipoUsuario = tipoUsuario;
+    }
+
+
+    //GETTERS Y SETTERS
 
     public String getNombre() {
         return nombre;
@@ -58,28 +70,15 @@ public abstract class Usuario {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public TipoUsuario getTipoUsuario() {
+        return tipoUsuario;
     }
 
-    public static int getContador() {
-        return contador;
-    }
-
-    public static void setContador(int contador) {
-        Usuario.contador = contador;
-    }
-
-    public String getCarrera() {
-        return carrera;
-    }
-
-    public void setCarrera(String carrera) {
-        this.carrera = carrera;
+    public void setTipoUsuario(TipoUsuario tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
     }
 
     //TO STRING
-
     @Override
     public String toString() {
         return "Usuario{" +
@@ -91,7 +90,6 @@ public abstract class Usuario {
     }
 
     //EQUALS Y HASHCODE SEGUN ID
-
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -105,18 +103,31 @@ public abstract class Usuario {
     }
 
     //METODOS
-
-
-    public void actualizarPerfil(String nuevoNombre, String nuevaCarrera){
-        this.nombre = nuevoNombre;
-        this.carrera = nuevaCarrera;
-    }
     public void cambiarContrasenia(String contrasenia) {
         this.contrasenia = contrasenia;
     }
 
-    // Metodo abstracto para diferenciar comportamientos (borrar si no se usa :))
-    public abstract String getTipoUsuario();
+    //METODOS PARA JSON
+
+    public JSONObject toJSON() {
+        JSONObject json = new JSONObject();
+        json.put("id", id);
+        json.put("nombre", nombre);
+        json.put("email", email);
+        json.put("contrasenia", contrasenia);
+        json.put("tipoUsuario", tipoUsuario.toString());
+        return json;
+    }
+
+    @Override
+    public Usuario fromJSON(JSONObject obj) {
+        this.id = obj.getInt("id");
+        this.nombre = obj.getString("nombre");
+        this.email = obj.getString("email");
+        this.contrasenia = obj.getString("contrasenia");
+        this.tipoUsuario = TipoUsuario.valueOf(obj.getString("tipoUsuario"));
+        return this;
+    }
 
 
 

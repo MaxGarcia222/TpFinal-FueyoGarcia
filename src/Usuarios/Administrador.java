@@ -1,12 +1,26 @@
 package Usuarios;
 
 import Enums.TipoUsuario;
+import Exceptions.IdInvalidoException;
 import Gestores.GestorUsuarios;
+import org.json.JSONObject;
+import org.json.JSONArray;
 
-public class Administrador extends Usuario {
-    //pensar atributos
-    // despues agrego los metodos para eliminar estudiante, cambiarle el tipo
-    // ver uysuarios, ver herramientas, subirle tareas, etc
+
+import java.sql.SQLOutput;
+
+public class Administrador extends Usuario  {
+    public Administrador(String nombre, String email, String contrasenia, TipoUsuario tipoUsuario) {
+        super(nombre, email, contrasenia, tipoUsuario);
+    }
+
+    public Administrador() {
+    }
+
+    public Administrador(String nombre, String email, String contrasenia, int id, TipoUsuario tipoUsuario) {
+        super(nombre, email, contrasenia, id, tipoUsuario);
+    }
+    //CONTRUCTOR PARA JSON
 
 
     //METODOS
@@ -15,24 +29,36 @@ public class Administrador extends Usuario {
         if (eliminado) {
             System.out.println("Usuario con ID " + id + " eliminado correctamente.");
         } else {
-            System.out.println("No se encontró ningún usuario con ese ID.");
+            throw new IdInvalidoException("ERROR: id no encontrado");
         }
     }
 
-    // Actualizar tareas a todos los estudiantes de una carrera
-    public void actualizarTareasPorCarrera(String carrera, GestorUsuarios gestor) {
-        gestor.actualizarTareasPorCarrera(carrera);
-        System.out.println("Tareas actualizadas para los estudiantes de " + carrera + ".");
-    }
 
-    // Cambiar tipo de usuario (Básico ↔ Premium)
+    // Cambiar tipo de usuario
     public void cambiarTipoUsuario(int id, GestorUsuarios gestor, TipoUsuario nuevoTipo) {
         Usuario u = gestor.buscarUsuarioPorId(id);
         if (u instanceof Estudiante e) {
-            e.setTipo(nuevoTipo);
+            e.setTipoUsuario(nuevoTipo);
             System.out.println("El usuario " + e.getNombre() + " ahora es " + nuevoTipo);
         } else {
             System.out.println("No se puede cambiar el tipo de este usuario.");
         }
     }
+
+    //METODOS JSON
+
+
+    @Override
+    public JSONObject toJSON() {
+        JSONObject json = super.toJSON();
+        json.put("tipo", "Administrador");
+        return json;
+    }
+
+    @Override
+    public Administrador fromJSON(JSONObject obj) {
+        super.fromJSON(obj);
+        return this;
+    }
+
 }

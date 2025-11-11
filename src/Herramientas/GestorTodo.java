@@ -3,7 +3,7 @@ import Exceptions.TareaException;
 import java.util.HashSet;
 import java.util.Set;
 
-public class GestorTodo {
+public class GestorTodo extends Herramienta{
 
     private Set<TareaTodo> tareas;
 
@@ -90,5 +90,4 @@ public class GestorTodo {
             System.out.println("No se encontraron tareas con: " + texto);
         }
     }
-
 }

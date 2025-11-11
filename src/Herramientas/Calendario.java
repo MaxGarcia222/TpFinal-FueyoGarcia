@@ -9,7 +9,7 @@ import java.util.*;
 
 //La proxima que hagamos un tp olvidemonos de las fechas por favor :'(
 
-public class Calendario {
+public class Calendario extends Herramienta {
     private Map<LocalDate, List<Evento>> eventos = new HashMap<>();
 
     public void agregarEvento(Evento e) {
@@ -95,7 +95,7 @@ public class Calendario {
 
         //imprime el nombre del mes en español y el año
         System.out.println("\n    " + inicio.getMonth().getDisplayName(TextStyle.FULL, new Locale("es")) + " " + anio);
-        System.out.println("Lu Ma Mi Ju Vi Sa Do");
+        System.out.println("Lu  Ma  Mi  Ju  Vi  Sa  Do");
 
         for (int i = 0; i < espaciosIniciales; i++) {
             System.out.print("   ");
@@ -181,7 +181,7 @@ public class Calendario {
                         + " " + dia.getDayOfMonth() + ":");
 
                 for (Evento e : lista) {
-                    System.out.println(" - " + e.getTitulo() + " (" + e.getTipo() + ")");
+                    System.out.println(" - " + e.getTitulo());
                 }
             }
         }
@@ -192,8 +192,5 @@ public class Calendario {
 
         System.out.println();
     }
-
-
-
 
 }
